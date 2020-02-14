@@ -6,8 +6,6 @@ export default function App() {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>HOME</Text>
-
-      {console.log('as')}
     </View>
   );
 }
