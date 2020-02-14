@@ -1,0 +1,7 @@
+{
+  "hooks": {
+    "pre-commit": "eslint src",
+    "pre-push": "eslint src",
+    "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+  }
+}
