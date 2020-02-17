@@ -2,6 +2,7 @@ import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import LinearGradient from 'react-native-linear-gradient';
 import { RED, WHITE, PRIMARY_DARK, BLACK } from '../../utils/colors';
+import formatValue from '../../utils/formatValue';
 
 export const Container = styled.View`
   padding: 5px;
@@ -30,6 +31,8 @@ export const ContainerValue = styled(LinearGradient).attrs({
 
 export const LabelValue = styled.Text`
   color: ${WHITE};
+  font-size: ${props => formatValue(props.size)};
+  text-align: center;
 `;
 
 export const ContainerDescription = styled.View``;

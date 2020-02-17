@@ -5,6 +5,8 @@ export const Container = styled.View`
   width: 200px;
   height: 200px;
   background-color: ${WHITE};
+  align-self: center;
+  margin-top: 40px;
 `;
 
 export const Card = styled.View`

@@ -1,4 +1,5 @@
 import React from 'react';
+import { format } from 'date-fns';
 import {
   Container,
   Card,
@@ -11,18 +12,24 @@ import {
   ContainerDescription,
 } from './styles';
 
-export default function CardTransaction({ description, value, date }) {
+export default function CardTransaction({
+  description,
+  value,
+  date,
+  id,
+  remove,
+}) {
   return (
     <Container>
       <Card style={{ elevation: 4 }}>
         <ContainerValue>
-          <LabelValue>{value}</LabelValue>
+          <LabelValue size={value.length}>R$ {value}</LabelValue>
         </ContainerValue>
         <ContainerDescription>
           <Description>{description}</Description>
-          <LabelDate>{date.toString()}</LabelDate>
+          <LabelDate>{format(date, 'dd/MM/yyyy')}</LabelDate>
         </ContainerDescription>
-        <DeleteButton>
+        <DeleteButton onPress={() => remove(id)}>
           <DeleteIcon />
         </DeleteButton>
       </Card>

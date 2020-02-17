@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Modal from 'react-native-modal';
 import {
   Container,
@@ -11,7 +11,17 @@ import {
   NewDateButton,
 } from './styles';
 
-export default function ModalComponent({ visible, fadeModal }) {
+export default function NewTransaction({ visible, fadeModal, newTransaction }) {
+  const [transaction, setTransaction] = useState({
+    description: '',
+    value: '',
+  });
+
+  function addNew() {
+    newTransaction(transaction);
+    setTransaction({});
+  }
+
   return (
     <Container>
       <Modal
@@ -20,11 +30,22 @@ export default function ModalComponent({ visible, fadeModal }) {
         style={{ justifyContent: 'flex-end', margin: 0 }}
       >
         <ModalContent>
-          <Input placeholder="Titulo" maxLength={50} />
+          <Input
+            placeholder="Titulo"
+            maxLength={15}
+            value={transaction.description}
+            onChangeText={text =>
+              setTransaction({ ...transaction, description: text })
+            }
+          />
           <Input
             keyboardType="numeric"
             placeholder="Valor (R$)"
-            maxLength={10}
+            maxLength={7}
+            value={transaction.value}
+            onChangeText={text =>
+              setTransaction({ ...transaction, value: text })
+            }
           />
           <ContainerLabels>
             <LabelDate>Data selecionada: 30/01/2020</LabelDate>
@@ -32,7 +53,10 @@ export default function ModalComponent({ visible, fadeModal }) {
               <LabelDate primary>Selecionar Data</LabelDate>
             </NewDateButton>
           </ContainerLabels>
-          <SaveButton style={{ elevation: 3 }}>
+          <SaveButton
+            style={{ elevation: 3 }}
+            onPress={() => addNew(transaction)}
+          >
             <TextButton>Nova Transação</TextButton>
           </SaveButton>
         </ModalContent>
