@@ -8,7 +8,7 @@ export default function NoTransactions() {
   return (
     <Container>
       <LottieView source={sleepGif} autoPlay loop />
-      <Label>Em desenvolvimento!</Label>
+      <Label>Não há transações!</Label>
     </Container>
   );
 }
