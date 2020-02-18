@@ -18,14 +18,19 @@ export default function CardTransaction({
   date,
   id,
   remove,
+  edit,
 }) {
+  function editValues() {
+    edit(id);
+  }
+
   return (
     <Container>
       <Card style={{ elevation: 4 }}>
         <ContainerValue>
           <LabelValue size={value.length}>R$ {value}</LabelValue>
         </ContainerValue>
-        <ContainerDescription>
+        <ContainerDescription onPress={editValues}>
           <Description>{description}</Description>
           <LabelDate>{formatDate(date)}</LabelDate>
         </ContainerDescription>

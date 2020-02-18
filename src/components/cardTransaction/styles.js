@@ -35,7 +35,9 @@ export const LabelValue = styled.Text`
   text-align: center;
 `;
 
-export const ContainerDescription = styled.View``;
+export const ContainerDescription = styled.TouchableOpacity`
+  flex: 5;
+`;
 
 export const Description = styled.Text`
   color: ${BLACK};

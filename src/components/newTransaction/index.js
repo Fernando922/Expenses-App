@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Alert } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Modal from 'react-native-modal';
@@ -14,7 +14,13 @@ import {
   NewDateButton,
 } from './styles';
 
-export default function NewTransaction({ visible, fadeModal, newTransaction }) {
+export default function NewTransaction({
+  visible,
+  fadeModal,
+  newTransaction,
+  editable,
+  editTransaction,
+}) {
   const refValue = useRef(null);
 
   const [transaction, setTransaction] = useState({
@@ -24,6 +30,16 @@ export default function NewTransaction({ visible, fadeModal, newTransaction }) {
   });
 
   const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    if (editable) {
+      setTransaction({
+        description: editable.description,
+        value: editable.value,
+        date: editable.date,
+      });
+    }
+  }, [visible]);
 
   const onChange = (event, selectedDate) => {
     setShow(false);
@@ -35,20 +51,33 @@ export default function NewTransaction({ visible, fadeModal, newTransaction }) {
     setShow(true);
   };
 
-  function addNew() {
+  function resetFields() {
+    setTransaction({ description: '', value: '', date: new Date() });
+  }
+
+  function submit() {
     if (transaction.description === '' || transaction.value === '') {
       Alert.alert('Atenção!', 'Preencha todos os campos!');
     } else {
-      newTransaction(transaction);
-      setTransaction({ description: '', value: '', date: new Date() });
+      if (editable) {
+        editTransaction(transaction, editable.id);
+      } else {
+        newTransaction(transaction);
+      }
+      resetFields();
     }
+  }
+
+  function cancelEdit() {
+    resetFields();
+    fadeModal();
   }
 
   return (
     <Container>
       <Modal
         isVisible={visible}
-        onBackdropPress={fadeModal}
+        onBackdropPress={cancelEdit}
         style={{ justifyContent: 'flex-end', margin: 0 }}
       >
         <ModalContent>
@@ -80,11 +109,8 @@ export default function NewTransaction({ visible, fadeModal, newTransaction }) {
               <LabelDate primary>Selecionar Data</LabelDate>
             </NewDateButton>
           </ContainerLabels>
-          <SaveButton
-            style={{ elevation: 3 }}
-            onPress={() => addNew(transaction)}
-          >
-            <TextButton>Nova Transação</TextButton>
+          <SaveButton style={{ elevation: 3 }} onPress={() => submit()}>
+            <TextButton>Confirmar</TextButton>
           </SaveButton>
           {show && (
             <DateTimePicker

@@ -17,9 +17,11 @@ export default function App() {
     { id: 2, description: 'Padaria', value: '45,50', date: new Date() },
     { id: 3, description: 'Cafeteria', value: '9999,00', date: new Date() },
   ]);
+  const [editable, setEditable] = useState(null);
 
   function fadeModal() {
     setIsModalVisible(false);
+    setEditable(null);
   }
 
   function showModal() {
@@ -50,6 +52,20 @@ export default function App() {
     fadeModal();
   }
 
+  function edit(id) {
+    const index = transactions.findIndex(item => item.id === id);
+    setEditable(transactions[index]);
+    showModal();
+  }
+
+  function editTransaction(transaction, id) {
+    const index = transactions.findIndex(item => item.id === id);
+    const newList = [...transactions];
+    newList[index] = { id, ...transaction };
+    setTransactions([...newList]);
+    fadeModal();
+  }
+
   return (
     <Container>
       <StatusBar backgroundColor={PRIMARY_DARK} barStyle={BAR_STYLE} />
@@ -68,6 +84,7 @@ export default function App() {
               description={item.description}
               value={item.value}
               date={item.date}
+              edit={edit}
             />
           )}
         />
@@ -78,6 +95,8 @@ export default function App() {
         visible={isModalVisible}
         fadeModal={fadeModal}
         newTransaction={addTransaction}
+        editable={editable}
+        editTransaction={editTransaction}
       />
       <Fab style={{ elevation: 4 }} onPress={showModal}>
         <Icon name="plus" color={BLACK} size={32} />
