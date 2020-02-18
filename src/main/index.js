@@ -70,7 +70,7 @@ export default function App() {
     <Container>
       <StatusBar backgroundColor={PRIMARY_DARK} barStyle={BAR_STYLE} />
       <Toolbar action={showModal} />
-      <ExpensesGraph />
+      <ExpensesGraph transactions={transactions} />
 
       {transactions.length > 0 ? (
         <FlatList

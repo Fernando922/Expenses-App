@@ -43,7 +43,7 @@ export default function NewTransaction({
 
   const onChange = (event, selectedDate) => {
     setShow(false);
-    const currentDate = selectedDate;
+    const currentDate = selectedDate || new Date();
     setTransaction({ ...transaction, date: currentDate });
   };
 
