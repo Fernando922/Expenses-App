@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import { Alert } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import Modal from 'react-native-modal';
+import formatDate from '../../utils/formatDate';
 import {
   Container,
   ModalContent,
@@ -12,14 +15,33 @@ import {
 } from './styles';
 
 export default function NewTransaction({ visible, fadeModal, newTransaction }) {
+  const refValue = useRef(null);
+
   const [transaction, setTransaction] = useState({
     description: '',
     value: '',
+    date: new Date(),
   });
 
+  const [show, setShow] = useState(false);
+
+  const onChange = (event, selectedDate) => {
+    setShow(false);
+    const currentDate = selectedDate;
+    setTransaction({ ...transaction, date: currentDate });
+  };
+
+  const showDatepicker = () => {
+    setShow(true);
+  };
+
   function addNew() {
-    newTransaction(transaction);
-    setTransaction({});
+    if (transaction.description === '' || transaction.value === '') {
+      Alert.alert('Atenção!', 'Preencha todos os campos!');
+    } else {
+      newTransaction(transaction);
+      setTransaction({ description: '', value: '', date: new Date() });
+    }
   }
 
   return (
@@ -37,8 +59,11 @@ export default function NewTransaction({ visible, fadeModal, newTransaction }) {
             onChangeText={text =>
               setTransaction({ ...transaction, description: text })
             }
+            returnKeyType="next"
+            onSubmitEditing={() => refValue.current.focus()}
           />
           <Input
+            ref={refValue}
             keyboardType="numeric"
             placeholder="Valor (R$)"
             maxLength={7}
@@ -48,8 +73,10 @@ export default function NewTransaction({ visible, fadeModal, newTransaction }) {
             }
           />
           <ContainerLabels>
-            <LabelDate>Data selecionada: 30/01/2020</LabelDate>
-            <NewDateButton>
+            <LabelDate>
+              Data selecionada: {formatDate(transaction.date)}
+            </LabelDate>
+            <NewDateButton onPress={() => showDatepicker()}>
               <LabelDate primary>Selecionar Data</LabelDate>
             </NewDateButton>
           </ContainerLabels>
@@ -59,6 +86,15 @@ export default function NewTransaction({ visible, fadeModal, newTransaction }) {
           >
             <TextButton>Nova Transação</TextButton>
           </SaveButton>
+          {show && (
+            <DateTimePicker
+              value={transaction.date}
+              mode="date"
+              display="default"
+              onChange={onChange}
+              maximumDate={new Date()}
+            />
+          )}
         </ModalContent>
       </Modal>
     </Container>

@@ -44,7 +44,7 @@ export default function App() {
         id: transactions.length + 1,
         description: transaction.description,
         value: transaction.value,
-        date: new Date(),
+        date: transaction.date,
       },
     ]);
     fadeModal();

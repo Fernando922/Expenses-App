@@ -1,5 +1,4 @@
 import React from 'react';
-import { format } from 'date-fns';
 import {
   Container,
   Card,
@@ -11,6 +10,7 @@ import {
   DeleteIcon,
   ContainerDescription,
 } from './styles';
+import formatDate from '../../utils/formatDate';
 
 export default function CardTransaction({
   description,
@@ -27,7 +27,7 @@ export default function CardTransaction({
         </ContainerValue>
         <ContainerDescription>
           <Description>{description}</Description>
-          <LabelDate>{format(date, 'dd/MM/yyyy')}</LabelDate>
+          <LabelDate>{formatDate(date)}</LabelDate>
         </ContainerDescription>
         <DeleteButton onPress={() => remove(id)}>
           <DeleteIcon />
