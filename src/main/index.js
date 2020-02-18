@@ -13,9 +13,24 @@ import Toolbar from '../components/toolbar';
 export default function App() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [transactions, setTransactions] = useState([
-    { id: 1, description: 'Cinema', value: '80', date: new Date() },
-    { id: 2, description: 'Padaria', value: '45,50', date: new Date() },
-    { id: 3, description: 'Cafeteria', value: '9999,00', date: new Date() },
+    {
+      id: 1,
+      description: 'Padaria',
+      value: 20,
+      date: new Date('2020-02-17T18:00:02.072Z'),
+    },
+    {
+      id: 2,
+      description: 'Cafeteria',
+      value: 10,
+      date: new Date('2020-02-18T17:00:02.072Z'),
+    },
+    {
+      id: 3,
+      description: 'Cinema',
+      value: 70,
+      date: new Date('2020-02-14T18:00:02.072Z'),
+    },
   ]);
   const [editable, setEditable] = useState(null);
 
