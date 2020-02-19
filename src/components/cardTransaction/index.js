@@ -28,7 +28,9 @@ export default function CardTransaction({
     <Container>
       <Card style={{ elevation: 4 }}>
         <ContainerValue>
-          <LabelValue size={value.length}>R$ {value}</LabelValue>
+          <LabelValue size={value.length}>
+            R$ {value.toString().replace('.', ',')}
+          </LabelValue>
         </ContainerValue>
         <ContainerDescription onPress={editValues}>
           <Description>{description}</Description>

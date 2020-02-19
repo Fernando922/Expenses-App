@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StatusBar, Alert, FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { PRIMARY_DARK, BLACK } from '../utils/colors';
@@ -7,32 +7,15 @@ import NoTransactions from '../components/noTransactions';
 import { Container, Fab } from './styles';
 import NewTransaction from '../components/newTransaction';
 import CardTransaction from '../components/cardTransaction';
+import ConfirmAnimation from '../components/confirmAnimation';
 import ExpensesGraph from '../components/expensesGraph';
 import Toolbar from '../components/toolbar';
 
 export default function App() {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [transactions, setTransactions] = useState([
-    {
-      id: 1,
-      description: 'Padaria',
-      value: 20,
-      date: new Date('2020-02-17T18:00:02.072Z'),
-    },
-    {
-      id: 2,
-      description: 'Cafeteria',
-      value: 10,
-      date: new Date('2020-02-18T17:00:02.072Z'),
-    },
-    {
-      id: 3,
-      description: 'Cinema',
-      value: 70,
-      date: new Date('2020-02-14T18:00:02.072Z'),
-    },
-  ]);
+  const [transactions, setTransactions] = useState([]);
   const [editable, setEditable] = useState(null);
+  const [isVisibleConfirm, setIsVisibleConfirm] = useState(false);
 
   function fadeModal() {
     setIsModalVisible(false);
@@ -41,6 +24,18 @@ export default function App() {
 
   function showModal() {
     setIsModalVisible(true);
+  }
+
+  useEffect(() => {
+    if (isVisibleConfirm) {
+      setTimeout(() => {
+        setIsVisibleConfirm(false);
+      }, 2000);
+    }
+  }, [isVisibleConfirm]);
+
+  function displayDoneAnimation() {
+    setIsVisibleConfirm(true);
   }
 
   function removeSelected(id) {
@@ -60,11 +55,12 @@ export default function App() {
       {
         id: transactions.length + 1,
         description: transaction.description,
-        value: transaction.value,
+        value: parseFloat(transaction.value.replace(',', '.'), 10),
         date: transaction.date,
       },
     ]);
     fadeModal();
+    displayDoneAnimation();
   }
 
   function edit(id) {
@@ -79,6 +75,7 @@ export default function App() {
     newList[index] = { id, ...transaction };
     setTransactions([...newList]);
     fadeModal();
+    displayDoneAnimation();
   }
 
   return (
@@ -86,6 +83,7 @@ export default function App() {
       <StatusBar backgroundColor={PRIMARY_DARK} barStyle={BAR_STYLE} />
       <Toolbar action={showModal} />
       <ExpensesGraph transactions={transactions} />
+      {isVisibleConfirm && <ConfirmAnimation />}
 
       {transactions.length > 0 ? (
         <FlatList
