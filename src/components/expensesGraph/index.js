@@ -18,22 +18,26 @@ export default function ExpensesGraph({ transactions }) {
 
   function divideExpensesPerDay() {
     const biggerValue = findBiggerValue(transactions);
+
     function updateProgress(days) {
       const listProgress = [0, 0, 0, 0, 0, 0, 0];
-      days.map(day => {
-        listProgress[day.number] = (day.value * 100) / biggerValue / 100;
-        return true;
+      days.forEach(day => {
+        if (listProgress[day.number] !== 0) {
+          listProgress[day.number] += (day.value * 100) / biggerValue / 100;
+        } else {
+          listProgress[day.number] = (day.value * 100) / biggerValue / 100;
+        }
       });
       setDailyExpenses(listProgress);
     }
 
     function findDays(list) {
       const days = [];
-      list.map(item => {
+      list.forEach(item => {
         const dayValue = { number: item.date.getDay(), value: item.value };
         days.push(dayValue);
-        return true;
       });
+
       updateProgress(days);
     }
 
